@@ -1,0 +1,135 @@
+/* ==========================================================================
+   RESPONSIVE CSS — COMPACT BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .footer-grid > :first-child {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+
+  /* HUD Mobile */
+  #hud-bar {
+    height: auto;
+    min-height: 36px;
+    padding: 4px 0;
+  }
+
+  .hud-center {
+    display: none;
+  }
+
+  .hud-progress-bar {
+    width: 60px;
+  }
+
+  /* Grid Collapse */
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-8);
+    min-height: auto;
+  }
+
+  .hero-cta-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-cta-wrapper .btn {
+    width: 100%;
+  }
+
+  /* Sections */
+  .investigation-section {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-6);
+  }
+
+  /* Intel rows label stacking */
+  .intel-row {
+    flex-wrap: wrap;
+  }
+
+  .intel-row-label {
+    min-width: 100%;
+    max-width: 100%;
+    margin-bottom: -4px;
+  }
+
+  /* Dossier Responsive */
+  .dossier-body {
+    padding: 10px;
+  }
+
+  .dossier-table,
+  .dossier-table thead,
+  .dossier-table tbody,
+  .dossier-table th,
+  .dossier-table td,
+  .dossier-table tr {
+    display: block;
+  }
+
+  .dossier-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .dossier-table tr {
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 4px 0;
+  }
+
+  .dossier-table td {
+    border: none;
+    padding: 2px 0;
+    width: 100% !important;
+  }
+
+  .dossier-table td.property-name {
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-size: 0.55rem;
+  }
+
+  .fingerprint-matrix-grid {
+    grid-template-columns: repeat(16, 1fr);
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+}

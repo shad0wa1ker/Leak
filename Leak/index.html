@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browser Fingerprint — Digital Identity Investigation</title>
+  <meta name="description" content="An interactive cybersecurity and digital forensics demonstration of browser fingerprinting and client-side intelligence.">
+  <meta name="theme-color" content="#07090e">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY HUD STATUS BAR
+       ======================================================================== -->
+  <header id="hud-bar" role="banner" aria-label="Investigation Status HUD">
+    <div class="container">
+      <div class="hud-inner">
+        <div class="hud-left">
+          <div class="hud-badge live">
+            <span class="hud-indicator-dot" aria-hidden="true"></span>
+            <span id="hud-system-status">ACTIVE INVESTIGATION</span>
+          </div>
+          <div class="hud-badge">
+            <span class="sr-only">Case Identifier: </span>
+            <span id="hud-case-id">CASE-INITIALIZING</span>
+          </div>
+        </div>
+
+        <div class="hud-center">
+          <span class="hud-badge" id="hud-section-badge">
+            SECTION: <strong id="hud-current-section">01 // INTRODUCTION</strong>
+          </span>
+        </div>
+
+        <div class="hud-right">
+          <div class="hud-badge">
+            SIGNALS: <strong id="hud-signals-count" class="highlight-green">0</strong>
+          </div>
+          <div class="hud-progress-container">
+            <div class="hud-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+              <div class="hud-progress-fill" id="hud-progress-fill"></div>
+            </div>
+            <span class="hud-progress-text" id="hud-progress-text">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN INVESTIGATION STREAM
+       ======================================================================== -->
+  <main id="main-content">
+
+    <!-- SECTION 01: INTRODUCTION -->
+    <section id="section-01" class="investigation-section hero-section" aria-labelledby="hero-heading">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span aria-hidden="true">●</span> DIGITAL FORENSICS DEMONSTRATION
+          </div>
+          <h1 id="hero-heading" class="hero-title">
+            HOW MUCH DOES YOUR BROWSER KNOW ABOUT YOU?
+          </h1>
+          <p class="hero-description">
+            Every time you visit a webpage, your browser silently exposes dozens of hardware, network, and configuration signals. Scroll down to discover yours.
+          </p>
+          <div class="hero-cta-wrapper">
+            <a href="#section-02" class="btn btn-primary" id="start-investigation-btn">
+              START MY INVESTIGATION
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            </a>
+            <span class="font-mono text-xs" style="color: var(--text-muted);">
+              [PURE CLIENT-SIDE // ZERO COOKIES // IN-MEMORY ONLY]
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 02: WHAT IS BROWSER FINGERPRINTING? -->
+    <section id="section-02" class="investigation-section" aria-labelledby="s2-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 02 // METHODOLOGY BRIEFING</span>
+          <h2 id="s2-heading" class="section-title">WHAT IS BROWSER FINGERPRINTING?</h2>
+          <p class="section-narrative">
+            Browser fingerprinting is an information gathering technique that collects technical attributes from your browser and device environment. While individual attributes are commonplace, their unique combination creates a recognizable digital signature.
+          </p>
+        </div>
+
+        <div class="intel-panel">
+          <div class="intel-panel-header">
+            <span class="intel-panel-title">HOW IT WORKS</span>
+            <span class="intel-panel-count">3 key concepts</span>
+          </div>
+          <div class="intel-panel-body">
+            <div class="intel-row">
+              <div class="intel-row-indicator ind-cyan"></div>
+              <span class="intel-row-label">Signal Aggregation</span>
+              <span class="intel-row-value">Your screen alone matches 20% of users — add GPU, audio latency, fonts, and language list to narrow it down drastically.</span>
+            </div>
+            <div class="intel-row">
+              <div class="intel-row-indicator ind-green"></div>
+              <span class="intel-row-label">Stateless ID</span>
+              <span class="intel-row-value">Fingerprinting relies on hardware & software configuration, not stored tokens. Incognito mode doesn't change your GPU or screen.</span>
+            </div>
+            <div class="intel-row">
+              <div class="intel-row-indicator ind-amber"></div>
+              <span class="intel-row-label">Industry Use</span>
+              <span class="intel-row-value">Banks use it to detect fraud and botnets. Ad networks use the same signals for cross-site behavioral tracking.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 03: NETWORK & LOCATION INTELLIGENCE -->
+    <section id="section-03" class="investigation-section" aria-labelledby="s3-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 03 // TELEMETRY & NETWORK</span>
+          <h2 id="s3-heading" class="section-title">FIRST, LET'S IDENTIFY YOUR CONNECTION.</h2>
+          <p class="section-narrative">
+            Your connection details and system clock establish your network perimeter. External geolocation requires explicit authorization.
+          </p>
+        </div>
+
+        <!-- Explicit External Consent Gate -->
+        <div class="consent-gate-card" id="ip-consent-card">
+          <div class="consent-gate-header">
+            <svg class="consent-gate-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="consent-gate-title">EXTERNAL IP LOOKUP AUTHORIZATION REQUIRED</span>
+          </div>
+          <p class="consent-gate-body">
+            This investigation uses <strong>only local browser APIs</strong> by default. To reveal your public IP, ISP, and approximate geo-location, authorize a single external query. Nothing is stored.
+          </p>
+          <div class="consent-gate-actions">
+            <button type="button" class="btn btn-cyan btn-sm" id="btn-consent-ip">
+              AUTHORIZE EXTERNAL LOOKUP
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-decline-ip">
+              REMAIN LOCAL ONLY
+            </button>
+          </div>
+        </div>
+
+        <!-- Network Intelligence Grid -->
+        <div id="network-grid">
+          <!-- Populated by js/ui/sections.js -->
+        </div>
+
+        <!-- Cross-Signal Consistency Indicators -->
+        <div id="network-consistency-container" style="margin-top: var(--space-6);">
+          <!-- Consistency cards rendered here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 04: BROWSER INTELLIGENCE -->
+    <section id="section-04" class="investigation-section" aria-labelledby="s4-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 04 // SOFTWARE ARCHITECTURE</span>
+          <h2 id="s4-heading" class="section-title">YOUR BROWSER HAS ALREADY REVEALED A LOT.</h2>
+          <p class="section-narrative">
+            Every HTTP request carries metadata about your browser engine, features, and privacy headers.
+          </p>
+        </div>
+
+        <div id="browser-grid">
+          <!-- Populated by js/ui/sections.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 05: DEVICE & HARDWARE INTELLIGENCE -->
+    <section id="section-05" class="investigation-section" aria-labelledby="s5-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 05 // HARDWARE FORENSICS</span>
+          <h2 id="s5-heading" class="section-title">LET'S TAKE A CLOSER LOOK AT YOUR DEVICE.</h2>
+          <p class="section-narrative">
+            Modern web standards allow sites to query your display geometry, CPU threads, GPU silicon via WebGL, and micro-variations in audio processing — all without asking permission.
+          </p>
+        </div>
+
+        <div id="device-grid">
+          <!-- Populated by js/ui/sections.js (Display, Hardware, Graphics, Audio) -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 06: BROWSER ENVIRONMENT & PRIVACY INTELLIGENCE -->
+    <section id="section-06" class="investigation-section" aria-labelledby="s6-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 06 // PRIVACY & SHIELDS</span>
+          <h2 id="s6-heading" class="section-title">WHAT ELSE IS YOUR BROWSER REVEALING?</h2>
+          <p class="section-narrative">
+            Passive APIs reveal permission states, content blocking shields, and storage policies without user interaction.
+          </p>
+        </div>
+
+        <div id="privacy-grid">
+          <!-- Populated by js/ui/sections.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 07: FINGERPRINT ANALYSIS -->
+    <section id="section-07" class="investigation-section" aria-labelledby="s7-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 07 // SYNTHESIS ENGINE</span>
+          <h2 id="s7-heading" class="section-title">NOW LET'S PUT EVERYTHING TOGETHER.</h2>
+          <p class="section-narrative">
+            All signals are normalized and hashed into a deterministic identifier — entirely inside your browser. This shows how trackers synthesize a fingerprint from passive signals.
+          </p>
+        </div>
+
+        <div class="fingerprint-matrix-wrapper">
+          <div class="fingerprint-hash-bar">
+            <span class="hash-label">SHA-256 HASH:</span>
+            <span id="fingerprint-hash-value">CALCULATING...</span>
+          </div>
+
+          <div class="fingerprint-matrix-grid" id="fingerprint-matrix-cells" aria-label="Visual Fingerprint Matrix">
+          </div>
+        </div>
+
+        <div class="grid-3" id="synthesis-stats-grid" style="margin-top: 10px;">
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 08: DIGITAL PRIVACY ASSESSMENT -->
+    <section id="section-08" class="investigation-section" aria-labelledby="s8-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag">SECTION 08 // EXPOSURE EVALUATION</span>
+          <h2 id="s8-heading" class="section-title">DIGITAL PRIVACY ASSESSMENT</h2>
+          <p class="section-narrative">
+            An illustrative analysis of your browser's exposure, highlighting high-entropy vectors and actionable defenses.
+          </p>
+        </div>
+
+        <div id="risk-assessment-container">
+          <!-- Populated by js/ui/sections.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 09: FBI-STYLE DIGITAL INVESTIGATION REPORT -->
+    <section id="section-09" class="investigation-section" aria-labelledby="s9-heading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-category-tag" style="color: var(--accent-red); border-color: var(--accent-red);">SECTION 09 // CLASSIFIED CASE FILE</span>
+          <h2 id="s9-heading" class="section-title">INVESTIGATION COMPLETE.</h2>
+          <p class="section-narrative">
+            All gathered intelligence indexed into a classified digital forensics case file.
+          </p>
+        </div>
+
+        <!-- FBI Classified Dossier Container -->
+        <div id="investigation-report-container">
+          <!-- Populated by js/ui/investigation-report.js -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       FOOTER & PRIVACY ASSURANCE
+       ======================================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h3 style="color: var(--text-highlight); margin-bottom: var(--space-3); font-size: var(--text-base);">
+            FORENSIC INVESTIGATION METHODOLOGY
+          </h3>
+          <p style="font-size: var(--text-xs); line-height: 1.7; color: var(--text-secondary);">
+            This tool is built solely for digital literacy and cybersecurity education. All fingerprint calculations, Canvas rendering, audio buffer evaluation, and entropy scoring occur strictly inside your local browser memory. No telemetry is collected, no analytics scripts are embedded, and no data is persistently stored in cookies or client storage.
+          </p>
+        </div>
+        <div>
+          <h4 style="color: var(--text-highlight); margin-bottom: var(--space-3); font-size: var(--text-xs); text-transform: uppercase;">
+            Privacy Architecture
+          </h4>
+          <ul style="list-style: none; font-size: var(--text-xs); line-height: 2; color: var(--text-secondary);">
+            <li>✓ Zero Cookies Used</li>
+            <li>✓ Zero LocalStorage Access</li>
+            <li>✓ Zero Third-Party Trackers</li>
+            <li>✓ Optional Consented External IP</li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="color: var(--text-highlight); margin-bottom: var(--space-3); font-size: var(--text-xs); text-transform: uppercase;">
+            Standards & APIs
+          </h4>
+          <ul style="list-style: none; font-size: var(--text-xs); line-height: 2; color: var(--text-secondary);">
+            <li>WebGL 1 &amp; WebGL 2</li>
+            <li>Web Audio API</li>
+            <li>Network Information API</li>
+            <li>Web Crypto SHA-256</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>BROWSER FINGERPRINT // DIGITAL IDENTITY INVESTIGATION</span>
+        <span>VANILLA JS // ZERO DEPENDENCIES // STATIC NETLIFY COMPLIANT</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Bootstrap:
+       - Uses native ES Modules (js/app.js) when served via HTTP / HTTPS / Netlify.
+       - Automatically loads classic bundle (js/bundle.js) when opened directly via file:// (double-clicking) to bypass browser CORS restrictions on local file modules.
+  -->
+  <script>
+    if (window.location.protocol === 'file:') {
+      const script = document.createElement('script');
+      script.src = 'js/bundle.js';
+      document.body.appendChild(script);
+    } else {
+      const moduleScript = document.createElement('script');
+      moduleScript.type = 'module';
+      moduleScript.src = 'js/app.js';
+      document.body.appendChild(moduleScript);
+    }
+  </script>
+</body>
+</html>
